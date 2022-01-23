@@ -14,9 +14,14 @@ exports.scrape = functions.https.onRequest(async (request, respone) => {
 			$(".top-event").map((index, element) => {
 				const link = $(element).attr("href");
 				const title = $(element).find(".title").attr("title");
-				const description = $(element).find(".location").text();
+				const description = $(element)
+					.find(".location")
+					.html()
+					.split("<br>");
+				const date = description[0];
+				const location = description[1];
 				const image = $(element).find(".image").attr("data-src");
-				data.push({ link, title, description, image });
+				data.push({ link, title, date, location, image });
 			});
 
 			functions.logger.log(data);
